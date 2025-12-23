@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Developer Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  :root{
+  --accent:#00e6a8;
+  --bg:#020617;
+  --card:rgba(255,255,255,0.08);
+  --text:#eaf1ff;
+  --muted:#a4b0cc;
+}
+
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Poppins,sans-serif;
+}
+
+html{
+  scroll-behavior:smooth;
+  scroll-snap-type:y mandatory;
+}
+
+body{
+  background:linear-gradient(270deg,#020617,#050a1f,#020617);
+  background-size:400% 400%;
+  animation:bgMove 14s ease infinite;
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* BACKGROUND ANIMATION */
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* NET CANVAS */
+#net{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+
+/* NAVBAR */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:16px 7%;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(15px);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:1000;
+}
+
+nav h2{
+  color:var(--accent);
+}
+
+.nav-links{
+  display:flex;
+  gap:26px;
+}
+
+.nav-links a{
+  color:var(--text);
+  text-decoration:none;
+  font-weight:500;
+  position:relative;
+}
+
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-5px;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition:.3s;
+}
+
+.nav-links a:hover::after{
+  width:100%;
+}
+
+.menu{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* SECTIONS */
+section{
+  padding:90px 7%;
+  scroll-snap-align:start;
+  opacity:0;
+  transform:translateY(40px);
+  transition:.9s ease;
+}
+
+section.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.title{
+  text-align:center;
+  font-size:36px;
+  margin-bottom:45px;
+  text-shadow:0 0 12px rgba(0,230,168,.6);
+}
+
+/* HERO */
+.hero{
+  min-height:85vh;
+  display:flex;
+  align-items:center;
+}
+
+.hero h1{
+  font-size:56px;
+  line-height:1.2;
+  text-shadow:
+    0 0 10px rgba(0,230,168,.6),
+    0 0 25px rgba(0,230,168,.4);
+}
+
+.hero span{
+  color:var(--accent);
+}
+
+.hero p{
+  margin-top:20px;
+  max-width:650px;
+  color:var(--muted);
+  line-height:1.8;
+}
+
+/* BOX */
+.box{
+  background:var(--card);
+  padding:40px;
+  border-radius:24px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+  line-height:1.9;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+}
+
+/* CARDS */
+.card{
+  background:var(--card);
+  padding:30px;
+  border-radius:22px;
+  box-shadow:0 15px 30px rgba(0,0,0,.35);
+  border:1px solid rgba(0,230,168,.15);
+  transition:.4s ease;
+}
+
+.card:hover{
+  transform:translateY(-12px) scale(1.03);
+  border-color:rgba(0,230,168,.7);
+  box-shadow:
+    0 0 25px rgba(0,230,168,.4),
+    0 0 55px rgba(0,230,168,.25);
+}
+
+.card h3{
+  color:var(--accent);
+  margin-bottom:10px;
+}
+
+/* PROCESS */
+.step{
+  display:flex;
+  gap:18px;
+}
+
+.step span{
+  font-size:28px;
+  font-weight:700;
+  color:var(--accent);
+}
+
+/* CTA */
+.cta{
+  text-align:center;
+  background:linear-gradient(135deg,#0b8527,#001274);
+  padding:70px 25px;
+  border-radius:32px;
+  box-shadow:0 30px 60px rgba(0,0,0,.6);
+}
+
+/* CONTACT ICONS */
+.contact-icons{
+  display:flex;
+  justify-content:center;
+  gap:26px;
+  margin-top:30px;
+  flex-wrap:wrap;
+}
+
+/* ICON BASE */
+.icon-circle{
+  position:relative;
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  text-decoration:none;
+  cursor:pointer;
+  overflow:hidden;
+  animation:float 4s ease-in-out infinite;
+  transition:.35s ease;
+}
+
+/* RIPPLE */
+.icon-circle::before{
+  content:"";
+  position:absolute;
+  width:0;
+  height:0;
+  background:rgba(255,255,255,.35);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  opacity:0;
+}
+
+.icon-circle:active::before{
+  width:160%;
+  height:160%;
+  opacity:0;
+  transition:.6s;
+}
+
+/* NEON RING */
+.icon-circle::after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:50%;
+  background:conic-gradient(#00e6a8,transparent,#00e6a8);
+  filter:blur(12px);
+  opacity:0;
+  transition:.4s;
+}
+
+.icon-circle:hover::after{
+  opacity:1;
+}
+
+/* ICON COLORS */
+.icon-circle.fiverr{
+  background:#1dbf73;
+  color:#001018;
+  font-weight:900;
+  font-size:30px;
+  text-transform:lowercase;
+}
+
+.icon-circle.gmail{
+  background:#ffffff;
+  color:#001018;
+}
+
+.icon-circle.whatsapp{
+  background:#25D366;
+  color:#001018;
+}
+
+/* GLOW HOVER */
+.icon-circle:hover{
+  transform:translateY(-10px) scale(1.15);
+  box-shadow:
+    0 0 15px rgba(0,230,168,.7),
+    0 0 40px rgba(0,230,168,.6),
+    0 0 80px rgba(0,230,168,.4);
+}
+
+/* FLOAT */
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:35px;
+  color:var(--muted);
+}
+
+/* MOBILE FIX */
+@media(max-width:768px){
+  html{scroll-snap-type:none;}
+  .hero h1{font-size:40px;}
+  section{padding:80px 6%;}
+
+  .nav-links{
+    position:absolute;
+    top:65px;
+    right:0;
+    width:100%;
+    background:#020617;
+    flex-direction:column;
+    padding:22px;
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .nav-links.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .menu{display:block;}
+
+  .icon-circle{
+    width:60px;
+    height:60px;
+    font-size:24px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+  
+
+<canvas id="net"></canvas>
+
+<nav>
+  <h2>&lt;/&gt; WebDev</h2>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <div class="nav-links" id="nav">
+    <a href="#about" onclick="closeMenu()">About</a>
+    <a href="#expertise" onclick="closeMenu()">Expertise</a>
+    <a href="#process" onclick="closeMenu()">Process</a>
+    <a href="#services" onclick="closeMenu()">Services</a>
+    <a href="#why" onclick="closeMenu()">Why Me</a>
+    <a href="#cta" onclick="closeMenu()">contact us</a>
+    
+  </div>
+</nav>
+
+<section class="hero show">
+  <div>
+    <h1>I Build <span>Modern Websites</span></h1>
+    <p>
+      Clean, responsive and professional websites that look perfect on
+      mobile and desktop devices.
+    </p>
+  </div>
+</section>
+
+<section id="about">
+  <h2 class="title">About Me</h2>
+  <div class="box">
+    I am a web developer specializing in HTML & CSS.  
+    I build complete, responsive and modern websites following professional standards,
+    clean code practices and user-friendly design.
+  </div>
+</section>
+
+<section id="expertise">
+  <h2 class="title">My Expertise</h2>
+  <div class="grid">
+    <div class="card"><h3>HTML</h3><p>Semantic and SEO-friendly structure.</p></div>
+    <div class="card"><h3>CSS</h3><p>Animations, layouts & modern UI.</p></div>
+    <div class="card"><h3>Responsive Design</h3><p>Mobile-first approach.</p></div>
+    <div class="card"><h3>Complete Websites</h3><p>End-to-end development.</p></div>
+  </div>
+</section>
+
+<section id="process">
+  <h2 class="title">My Work Process</h2>
+  <div class="grid">
+    <div class="card step"><span>1</span><p>Understanding requirements</p></div>
+    <div class="card step"><span>2</span><p>Design & layout planning</p></div>
+    <div class="card step"><span>3</span><p>Responsive development</p></div>
+    <div class="card step"><span>4</span><p>Testing & delivery</p></div>
+  </div>
+</section>
+
+<section id="services">
+  <h2 class="title">What I Do</h2>
+  <div class="grid">
+    <div class="card"><h3>Business Websites</h3><p>Professional business presence.</p></div>
+    <div class="card"><h3>Landing Pages</h3><p>High-converting designs.</p></div>
+    <div class="card"><h3>Portfolio Websites</h3><p>Personal branding.</p></div>
+    <div class="card"><h3>Website Redesign</h3><p>Modern UI upgrades.</p></div>
+  </div>
+</section>
+
+<section id="why">
+  <h2 class="title">Why Choose Me?</h2>
+  <div class="grid">
+    <div class="card"><h3>Quality Work</h3><p>Clean & professional results.</p></div>
+    <div class="card"><h3>Responsive</h3><p>Perfect on all screens.</p></div>
+    <div class="card"><h3>On-Time</h3><p>Fast & reliable delivery.</p></div>
+    <div class="card"><h3>Support</h3><p>Clear communication.</p></div>
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <h2>Ready to Build Your Website?</h2>
+  <p>Let’s work together and create something great.</p>
+   <h3>Contact us here 👇</h3>
+ <div class="contact-icons">
+
+  <!-- Fiverr -->
+  <a href="https://www.fiverr.com/s/Q7oE5op" target="_blank" class="icon-circle fiverr">
+    <span class="fiverr-text">fi</span>
+  </a>
+
+  <!-- Gmail -->
+  <a href="mailto:lalbahadur53594@gmail.com?subject=Website%20Project"
+     class="icon-circle gmail">
+    <i class="fa-solid fa-envelope"></i>
+  </a>
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/919833697214?text=Hi%20Omkar,%20I%20want%20a%20website"
+     target="_blank"
+     class="icon-circle whatsapp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+</div>
+
+</section>
+
+<footer>© 2025  @Omkar_Webdev369 Portfolio</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById("nav").classList.toggle("show");
+}
+function closeMenu(){
+  document.getElementById("nav").classList.remove("show");
+}
+
+/* SCROLL REVEAL */
+const sections=document.querySelectorAll("section");
+window.addEventListener("scroll",()=>{
+  sections.forEach(sec=>{
+    if(sec.getBoundingClientRect().top < window.innerHeight-120){
+      sec.classList.add("show");
+    }
+  });
+});
+
+/* NET ANIMATION */
+const canvas=document.getElementById("net");
+const ctx=canvas.getContext("2d");
+let w,h;
+
+function resize(){
+  w=canvas.width=innerWidth;
+  h=canvas.height=innerHeight;
+}
+addEventListener("resize",resize);
+resize();
+
+const dots=[];
+const total=innerWidth<768?35:65;
+
+for(let i=0;i<total;i++){
+  dots.push({
+    x:Math.random()*w,
+    y:Math.random()*h,
+    vx:(Math.random()-.5)*0.6,
+    vy:(Math.random()-.5)*0.6
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,w,h);
+  for(let i=0;i<dots.length;i++){
+    let d=dots[i];
+    d.x+=d.vx;
+    d.y+=d.vy;
+    if(d.x<0||d.x>w)d.vx*=-1;
+    if(d.y<0||d.y>h)d.vy*=-1;
+
+    ctx.fillStyle="#00e6a8";
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,2,0,Math.PI*2);
+    ctx.fill();
+
+    for(let j=i+1;j<dots.length;j++){
+      let d2=dots[j];
+      let dist=Math.hypot(d.x-d2.x,d.y-d2.y);
+      if(dist<130){
+        ctx.strokeStyle=`rgba(0,230,168,${1-dist/130})`;
+        ctx.beginPath();
+        ctx.moveTo(d.x,d.y);
+        ctx.lineTo(d2.x,d2.y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
